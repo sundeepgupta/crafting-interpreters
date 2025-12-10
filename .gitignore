@@ -1,1 +1,18 @@
+# Build artifacts
+*.o
+*.out
+build/
+DerivedData/
+
+# Xcode user settings
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
+xcuserdata/
+
+# macOS
 .DS_Store
+
+# Executable (adjust name as needed)
+YourAppName
