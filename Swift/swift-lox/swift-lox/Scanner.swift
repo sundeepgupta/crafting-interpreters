@@ -9,8 +9,6 @@ final class Scanner {
         self.source = source
     }
 
-    private var isAtEnd: Bool { current >= source.count }
-
     func scanTokens() -> [Token] {
         while(!isAtEnd) {
             start = current
@@ -20,6 +18,8 @@ final class Scanner {
         tokens.append(Token(type: .eof, lexeme: "", literal: nil, line: line))
         return tokens
     }
+
+    private var isAtEnd: Bool { current >= source.count }
 
     private func scanToken() {
         let c = advance()
@@ -63,14 +63,10 @@ final class Scanner {
     }
 
     private func addToken(type: TokenType, literal: Any? = nil) {
-        let startIndex = source.index(offset: start)
-        let endIndex = source.index(offset: current)
-        let substring = source[startIndex..<endIndex]
-
         tokens.append(
             Token(
                 type: type,
-                lexeme: String(substring),
+                lexeme: source.substring(at: start..<current),
                 literal: literal,
                 line: line
             )
@@ -79,11 +75,15 @@ final class Scanner {
 }
 
 extension String {
-    func index(offset: Int) -> String.Index {
+    func index(at offset: Int) -> String.Index {
         index(startIndex, offsetBy: offset)
     }
 
-    func character(at index: Int) -> Character {
-        self[self.index(offset: index)]
+    func character(at offset: Int) -> Character {
+        self[index(at: offset)]
+    }
+
+    func substring(at range: Range<Int>) -> String {
+        String(self[index(at: range.lowerBound)..<index(at: range.upperBound)])
     }
 }
